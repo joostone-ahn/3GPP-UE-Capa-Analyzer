@@ -2,7 +2,7 @@
 For analyzing "UE-Capability" messages based on 3GPP ts36.331, ts38.331.
 It can analyze logs from you and show you summarized band combinations of EUTRA, NR, MRDC.
 
-![image](https://user-images.githubusercontent.com/98713651/151720588-206885f3-68e4-4699-8d65-47d205473836.png)
+![image](https://user-images.githubusercontent.com/98713651/176064201-8ac9a49e-5ecd-4ee3-8709-e41ab7b72151.png)
 
 1. run "main_UE_Capa_Analyzer.py"
 2. paste "UE Capability" msg from QXDM or wireshark 3GPP decoder, and press "Execute" button.
