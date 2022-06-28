@@ -94,6 +94,7 @@ class MyApp(QWidget):
         vbox = QVBoxLayout()
         vbox.addWidget(self.tabs)
         vbox.addStretch(1)
+        vbox.addWidget(QLabel("Copyright 2022. JUSEOK AHN<ajs3013@lguplus.co.kr> all rights reserved."))
 
         self.setLayout(vbox)
 
