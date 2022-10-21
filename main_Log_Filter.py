@@ -80,11 +80,12 @@ class MyApp(QWidget):
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.tabs)
-        vbox.addStretch(1)
+        vbox.addWidget(QLabel("Copyright 2022. JUSEOK AHN<ajs3013@lguplus.co.kr> all rights reserved."))
+
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('MSG EXTRACT & CONVERT v.1.2')
+        self.setWindowTitle('Log filter v.1.2')
         self.setGeometry(110, 50, 1000, 850)
         self.show()
 

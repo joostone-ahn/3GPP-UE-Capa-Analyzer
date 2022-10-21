@@ -97,7 +97,7 @@ class MyApp(QWidget):
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('UE Capa Decoder v.1.2')
+        self.setWindowTitle('UE Capa Analyzer v.1.2')
         self.setGeometry(110, 50, 1000, 850)
         self.show()
 
