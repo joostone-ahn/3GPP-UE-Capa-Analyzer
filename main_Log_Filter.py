@@ -85,7 +85,7 @@ class MyApp(QWidget):
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('Log filter v.1.2')
+        self.setWindowTitle('Log filter v.1.3')
         self.setGeometry(110, 50, 1000, 850)
         self.show()
 

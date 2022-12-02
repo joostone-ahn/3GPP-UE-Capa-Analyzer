@@ -1,3 +1,5 @@
+debug_mode =0
+
 # def select_msg_type():
 #     msg_type_list = []
 #     while True:
@@ -62,16 +64,19 @@ def extract_msg(msg_all, msg_type_list):
     for n in range(len(msg_all)):
         for m in msg_type_list:
             if m in msg_all[n] and 'UE-EUTRA-Capability-v9a0-IEs' not in msg_all[n]: #LSI 예외처리 : UE-EUTRA-Capability-v9a0-IEs
-                # print(m)
-                msg_start.append(n)
+                if m in msg_all[n] and 'UE-EUTRA-Capability-v10j0-IEs' not in msg_all[n]:  # LSI 예외처리 : UE-EUTRA-Capability-v9a0-IEs
+                    # print(m)
+                    msg_start.append(n)
     # print(msg_start)
 
     msg_start_value =[]
     for n in msg_start:
         msg_start_value.append(msg_all[n])
     #
-    # for n in msg_start_value:
-    #     print(n)
+    if debug_mode:
+        print("****debug1")
+        for n in msg_start_value:
+            print(n)
 
 
     msg_time = []
@@ -147,8 +152,10 @@ def extract_msg(msg_all, msg_type_list):
         msg_list.append(msg_item)
         count +=1
 
-    # for n in msg_list:
-    #     print(n)
+    if debug_mode:
+        print("****debug2")
+        for n in msg_list:
+            print(n)
 
     msg_type = []
     if 'UE-EUTRA-Capability' in msg_type_list:
@@ -176,9 +183,11 @@ def extract_msg(msg_all, msg_type_list):
                     msg_type.append('sib5')
                     break
 
-    # print(len(msg_list))
-    # print(len(msg_type))
-    # print(msg_type)
+    if debug_mode:
+        print("****debug3")
+        print(len(msg_list))
+        print(len(msg_type))
+        print(msg_type)
 
     if msg_type:
         if 'eutra'in msg_type or 'mrdc' in msg_type or 'nr' in msg_type:
@@ -223,11 +232,24 @@ def extract_msg(msg_all, msg_type_list):
                     temp[0] = '3'
                     msg_list_filtered[3][0] = "".join(temp)
 
-        # for n in msg_list_filtered:
-        #     print(n)
+        if debug_mode:
+            print("****debug4")
+            for n in msg_list_filtered:
+                print(n)
         msg_list = []
         msg_list = msg_list_filtered
 
+        # MRDC, NR 메시지 없을 때 예외처리 ('22.12.02)
+        msg_list_filtered =[]
+        for n in msg_list:
+            if type(n)==list:
+                msg_list_filtered.append(n)
+        msg_list = msg_list_filtered
+
+        if debug_mode:
+            print("****debug5")
+            for n in msg_list:
+                print(n)
 
     debug_list = []
     debug_list.append("=" * 90)
@@ -243,12 +265,11 @@ def extract_msg(msg_all, msg_type_list):
         for m in range(2, len(msg_list[n])):
             msg_list[n][m] = msg_list[n][m][tab_count*2:]
 
-    # for n in msg_list:
-    #     print(n)
-
     msg = []
     for n in msg_list:
-        # print(n)
+        if debug_mode:
+            print("****debug6")
+            print(n)
         msg += n
     msg = ['CONVERTED MSG - Total %d'%len(msg_list)] + ['='*90] + msg
 
