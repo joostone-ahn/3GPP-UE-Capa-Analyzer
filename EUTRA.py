@@ -50,9 +50,11 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
             band_comb_DL_list.append(band_item_DL_list)
             band_comb_UL_list.append(band_item_UL_list)
             band_comb_layers_list.append(band_item_layers_list)
-    # print(band_comb_DL_list)
-    # print(band_comb_UL_list)
-    # print(band_comb_layers_list)
+    # print(len(band_comb_DL_list))
+    # print(len(band_comb_UL_list))
+    # for n in band_comb_UL_list:
+    #     print(n)
+    # print(len(band_comb_layers_list))
 
     for m in item_sort:
         name = m['name'].split(":")[0]
@@ -112,11 +114,13 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
                 eutra_DL_comb.append(eutra_item)
     # for n in eutra_DL_comb:
     #     print(n)
+    # print(len(eutra_DL_comb))
 
     eutra_UL_comb = []
     for n in range(len(band_comb_UL_list)):
         cc_value = len(band_comb_UL_list[n])
         for o in range(len(band_comb_UL_list[n])):
+            # print(band_comb_UL_list[n][o])
             if "B" in band_comb_UL_list[n][o] or "C" in band_comb_UL_list[n][o]:
                 cc_value += 1
         # eutra_item = '[UL_' + str(cc_value) +'CC] '
@@ -130,10 +134,18 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
             else:
                 eutra_item += band_comb_UL_list[n][m]
                 eutra_UL_comb.append(eutra_item)
+        if len(band_comb_UL_list[n]) == 0: # MTK 단말 중 Uplink 포함하지 않는 Band Comb 확인됨 (23.04.11)
+            eutra_UL_comb.append(eutra_item+'*')
+        # print(n,len(eutra_UL_comb), eutra_UL_comb[-1])
+
     # for n in eutra_UL_comb:
     #     print(n)
-    # print(eutra_item_max)
 
+    # print(len(eutra_DL_comb))
+    # print(len(eutra_UL_comb))
+
+    # print(mrdc_item_max)
+    # print(eutra_item_max)
     if mrdc_item_max > eutra_item_max:
         eutra_item_max = mrdc_item_max
 
@@ -141,14 +153,21 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
     eutra_rst.append('=' * 80)
     eutra_rst.append('EUTRA BAND COMB - TOTAL: %d  *(): Layers' % len(band_comb_DL_list))
     eutra_rst.append('=' * 80)
+    # print(eutra_rst)
     for n in range(len(eutra_DL_comb)):
+        # print(eutra_DL_comb[n])
+        # print(eutra_UL_comb[n])
         index_num = '[' + str(n) + ']'
         index_num = f'{index_num:>5}'
+        # print(index_num)
         sp = eutra_item_max - len(eutra_DL_comb[n])
         rst = index_num + ' ' + eutra_DL_comb[n] + ' '*sp + '  '
         rst += eutra_UL_comb[n]
         eutra_rst.append(rst)
     eutra_rst.append('=' * 80)
+
+    # for n in eutra_rst:
+    #     print(n)
 
     featureSetDLPerCC = []
     for m in item_sort:

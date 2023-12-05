@@ -52,6 +52,7 @@ def process (msg):
 
     if msg_eutra:
         item_sort = RRC_items.sort_items(msg_eutra)
+        # print("OK")
         eutra_rst, eutra_featureSet, eutra_item_max = EUTRA.extract_band_combo(item_sort, msg_eutra, mrdc_item_max)
         # print("OK")
         if eutra_item_max > mrdc_item_max:
@@ -60,8 +61,6 @@ def process (msg):
             if msg_mrdc:
                 item_sort = RRC_items.sort_items(msg_mrdc)
                 mrdc_rst, nr_featureset_Id, mrdc_item_max = MRDC.extract_band_combo(item_sort, msg_mrdc, eutra_item_max)
-
-
 
     nr_featureSet = []
     msg_nr = NR.extract_nr_msg(msg)
@@ -93,11 +92,11 @@ class MyApp(QWidget):
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.tabs)
-        vbox.addWidget(QLabel("Copyright 2022. JUSEOK AHN<ajs3013@lguplus.co.kr> all rights reserved."))
+        vbox.addWidget(QLabel("Copyright 2023. JUSEOK AHN<ajs3013@lguplus.co.kr> all rights reserved."))
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('UE Capa Analyzer v.1.3')
+        self.setWindowTitle('UE Capa Analyzer v.1.4')
         self.setGeometry(110, 50, 1000, 850)
         self.show()
 
@@ -183,6 +182,10 @@ class Paste_tab(QWidget):
         msg_all_str = self.te.toPlainText()
         msg_all = msg_all_str.split('\n')
         msg, nothing = Extract_msg.extract_msg(msg_all, msg_type_list)
+        # print(len(msg_all))
+        # print(len(msg_type_list))
+        # print(msg_all)
+        # print(msg_type_list)
         if nothing:
             self.sig_nothing.emit(nothing)
         else:
@@ -195,6 +198,8 @@ class Paste_tab(QWidget):
             rst.append(vendor)
             rst.append(debug)
             rst.append("") # Opened_file
+            # print(eutra_bc)
+            # print(eutra_featureSet)
             self.sig_rst.emit(rst)
 
 
@@ -237,7 +242,7 @@ class File_Tab(QWidget):
                     print("read fail")
                 for n in range(len(msg_all)):
                     msg_all[n] = msg_all[n].replace('\n', '')
-
+        print("OK")
         msg, nothing = Extract_msg.extract_msg(msg_all, msg_type_list)
         # for n in msg:
         #     print(n)

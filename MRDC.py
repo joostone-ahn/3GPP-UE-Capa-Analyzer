@@ -1,8 +1,11 @@
 
 def extract_mrdc_msg(msg):
+    # print("OK")
+    msg_mrdc_start = None
     for n in range(len(msg)):
         if 'UE-MRDC-Capability' in msg[n]:
             msg_mrdc_start = n
+            # print(msg[n-1], msg[n])
     msg_mrdc = []
     if msg_mrdc_start:
         for n in msg[msg_mrdc_start:]:
