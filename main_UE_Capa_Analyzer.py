@@ -199,7 +199,7 @@ def process (msg):
         row = {
             'Dir': item[1].strip('[').strip(']'),
             'ID': item[0].strip('(').strip(')'),
-            'Fr': item[2],
+            'FR': item[2],
             'Band': item[3],
             'CC#': item[4],
             'BW': item[6],
