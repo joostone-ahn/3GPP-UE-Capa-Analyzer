@@ -182,7 +182,7 @@ class MyApp(QWidget):
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.tabs)
-        vbox.addWidget(QLabel("Copyright 2023. JUSEOK AHN<ajs3013@lguplus.co.kr> all rights reserved."))
+        vbox.addWidget(QLabel("Copyright 2025. JUSEOK AHN<ajs3013@lguplus.co.kr> all rights reserved."))
 
         self.setLayout(vbox)
 
