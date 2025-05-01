@@ -381,7 +381,7 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
 
     # 헤더 붙이기
     mrdc_title = ['=' * 80]
-    mrdc_title += [f'MRDC BAND COMB - TOTAL: {len(band_comb_list_v1540)}  *(): FeatureSetId / {{}}: SRS-TxPortSwitch']
+    mrdc_title += [f'MRDC BAND COMB - TOTAL: {len(band_comb_list_v1540)}  *(): FeatureSet ID']
     mrdc_title += ['=' * 80]
     mrdc_rst = mrdc_title + mrdc_rst
     mrdc_rst.append('=' * 80)

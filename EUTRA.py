@@ -206,7 +206,7 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
 
     eutra_featureSet =[]
     eutra_featureSet.append('=' * 80)
-    eutra_featureSet.append('EUTRA FEATURESET *(): EUTRA FeatureSetId')
+    eutra_featureSet.append('EUTRA FEATURESET')
     eutra_featureSet.append('=' * 80)
     for n in range(len(featureSetEUTRA_DL_Id)):
         index_num = '(' + str(n+1) + ')'

@@ -238,7 +238,7 @@ def extract_featureset(item_sort, msg, nr_featureset_Id):
 
     nr_featureSet = []
     nr_featureSet.append('=' * 80)
-    nr_featureSet.append('NR FEATURESET *(): NR FeatureSetId')
+    nr_featureSet.append('NR FEATURESET')
     nr_featureSet.append('=' * 80)
 
     combined_list = []

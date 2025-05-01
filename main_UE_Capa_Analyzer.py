@@ -70,7 +70,8 @@ def process (msg):
 
     import pandas as pd
     from tabulate import tabulate
-    table_fmt = 'github'
+    table_fmt = 'pretty'
+    # 'github','fancy_grid','psql','pipe','plain','simple','pretty','jira'
 
     eutra_rows = []
     for line in eutra_rst[3:-1]:
@@ -82,7 +83,8 @@ def process (msg):
         }
         eutra_rows.append(row)
     df_eutra = pd.DataFrame(eutra_rows)
-    tab_eutra = tabulate(df_eutra, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    colalign = ['left'] * len(df_eutra.columns)
+    tab_eutra = tabulate(df_eutra, headers='keys', tablefmt=table_fmt, showindex=False, colalign=colalign).split('\n')
     # for line in tab_eutra:
     #     print(line)
     eutra_rst = eutra_rst[:3] + tab_eutra
@@ -97,7 +99,8 @@ def process (msg):
         }
         eutra_fs_rows.append(row)
     df_eutra_fs = pd.DataFrame(eutra_fs_rows)
-    tab_eutra_fs = tabulate(df_eutra_fs, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    colalign = ['left'] * len(df_eutra_fs.columns)
+    tab_eutra_fs = tabulate(df_eutra_fs, headers='keys', tablefmt=table_fmt, showindex=False, colalign=colalign).split('\n')
     # for line in tab_eutra_fs:
     #     print(line)
     eutra_featureSet = eutra_featureSet[:3] + tab_eutra_fs
@@ -111,15 +114,36 @@ def process (msg):
         srs_tx = ''
         if 'x' not in items[-1]:
             srs_tx = items[-1].strip('{').strip('}')
+
+        cc_str = ''
+        cc_num = 0
+        if '*' in items[2]:
+            nr_part = items[2].split('_')[-1]
+            if '-' in nr_part:
+                nr_bands = nr_part.split('-')
+            else:
+                nr_bands = [nr_part]
+            # print(nr_bands)
+            for nr_band in nr_bands:
+                # print(nr_band)
+                if 'A' in nr_band:
+                    cc_num += 1
+                elif 'C' in nr_band:
+                    cc_num += 2
+        if cc_num > 1:
+            cc_str = f'{cc_num}CC'
+
         row = {
             'Ind': items[0].strip('[').strip(']'),
-            'DL': items[2],
+            'DL': items[2].strip('*'),
             'UL': items[4],
-            'SRS Tx': srs_tx
+            'DL NR CA': cc_str,
+            'UL SRS Tx': srs_tx
         }
         mrdc_rows.append(row)
     df_mrdc = pd.DataFrame(mrdc_rows)
-    tab_mrdc = tabulate(df_mrdc, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    colalign = ['left'] * len(df_mrdc.columns)
+    tab_mrdc = tabulate(df_mrdc, headers='keys', tablefmt=table_fmt, showindex=False, colalign=colalign).split('\n')
     # for line in tab_mrdc:
     #     print(line)
     mrdc_rst = mrdc_rst[:3] + tab_mrdc
@@ -153,7 +177,8 @@ def process (msg):
         }
         nr_fs_rows.append(row)
     df_nr_fs = pd.DataFrame(nr_fs_rows)
-    tab_nr_fs = tabulate(df_nr_fs, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    colalign = ['left'] * len(df_nr_fs.columns)
+    tab_nr_fs = tabulate(df_nr_fs, headers='keys', tablefmt=table_fmt, showindex=False, colalign=colalign).split('\n')
     # for line in tab_nr_fs:
     #     print(line)
     nr_featureSet = nr_featureSet[:3] + tab_nr_fs
@@ -366,14 +391,14 @@ class Result_tab(QWidget):
         self.LBL_EUTRA_BC.setFont(BoldFont)
         self.DSP_EUTRA_BC = QTextBrowser()
         self.DSP_EUTRA_BC.setFont(CourierNewFont)
-        self.DSP_EUTRA_BC.setFixedHeight(150)
+        self.DSP_EUTRA_BC.setFixedHeight(158)
 
 
         self.LBL_MRDC_BC = QLabel("MRDC BAND COMB")
         self.LBL_MRDC_BC.setFont(BoldFont)
         self.DSP_MRDC_BC = QTextBrowser()
         self.DSP_MRDC_BC.setFont(CourierNewFont)
-        self.DSP_MRDC_BC.setFixedHeight(200)
+        self.DSP_MRDC_BC.setFixedHeight(214)
 
 
         self.LBL_EUTRA_FS = QLabel("EUTRA FEATURESET")
@@ -381,14 +406,14 @@ class Result_tab(QWidget):
         self.LBL_EUTRA_FS.setFixedWidth(400)
         self.DSP_EUTRA_FS = QTextBrowser()
         self.DSP_EUTRA_FS.setFont(CourierNewFont)
-        self.DSP_EUTRA_FS.setFixedHeight(180)
+        self.DSP_EUTRA_FS.setFixedHeight(158)
         self.DSP_EUTRA_FS.setFixedWidth(400)
 
         self.LBL_NR_FS = QLabel("NR FEATURESET")
         self.LBL_NR_FS.setFont(BoldFont)
         self.DSP_NR_FS = QTextBrowser()
         self.DSP_NR_FS.setFont(CourierNewFont)
-        self.DSP_NR_FS.setFixedHeight(180)
+        self.DSP_NR_FS.setFixedHeight(158)
 
         # self.LBL_DEBUG = QLabel("DEBUG MSG")
         # self.LBL_DEBUG.setFont(BoldFont)
