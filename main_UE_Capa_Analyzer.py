@@ -83,14 +83,14 @@ def process (msg):
         eutra_rows.append(row)
     df_eutra = pd.DataFrame(eutra_rows)
     tab_eutra = tabulate(df_eutra, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
-    for line in tab_eutra:
-        print(line)
+    # for line in tab_eutra:
+    #     print(line)
     eutra_rst = eutra_rst[:3] + tab_eutra
 
     eutra_fs_rows = []
     for line in eutra_featureSet[3:-1]:
         items = line.split()
-        print(items)
+        # print(items)
         row = {
             'ID': items[0].strip('(').strip(')'),
             'DL Layers': ' '.join(items[2:])
@@ -98,8 +98,8 @@ def process (msg):
         eutra_fs_rows.append(row)
     df_eutra_fs = pd.DataFrame(eutra_fs_rows)
     tab_eutra_fs = tabulate(df_eutra_fs, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
-    for line in tab_eutra_fs:
-        print(line)
+    # for line in tab_eutra_fs:
+    #     print(line)
     eutra_featureSet = eutra_featureSet[:3] + tab_eutra_fs
 
 
@@ -120,8 +120,8 @@ def process (msg):
         mrdc_rows.append(row)
     df_mrdc = pd.DataFrame(mrdc_rows)
     tab_mrdc = tabulate(df_mrdc, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
-    for line in tab_mrdc:
-        print(line)
+    # for line in tab_mrdc:
+    #     print(line)
     mrdc_rst = mrdc_rst[:3] + tab_mrdc
 
     rows = []
@@ -139,7 +139,7 @@ def process (msg):
                 # print(rows[-1])
     nr_fs_rows = []
     for item in rows:
-        print(item)
+        # print(item)
         row = {
             'ID': item[0].strip('(').strip(')'),
             'Dir': item[1].strip('[').strip(']'),
@@ -154,8 +154,8 @@ def process (msg):
         nr_fs_rows.append(row)
     df_nr_fs = pd.DataFrame(nr_fs_rows)
     tab_nr_fs = tabulate(df_nr_fs, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
-    for line in tab_nr_fs:
-        print(line)
+    # for line in tab_nr_fs:
+    #     print(line)
     nr_featureSet = nr_featureSet[:3] + tab_nr_fs
 
     return eutra_rst, eutra_featureSet, mrdc_rst, nr_featureSet, rst, debug
