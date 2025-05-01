@@ -116,8 +116,9 @@ def process (msg):
         items = line.split()
         # print(items)
         row = {
+            'Dir': 'DL',
             'ID': items[0].strip('(').strip(')'),
-            'DL Layers': ' '.join(items[2:])
+            'Layers': ' '.join(items[2:])
         }
         eutra_fs_rows.append(row)
     df_eutra_fs = pd.DataFrame(eutra_fs_rows)
@@ -196,8 +197,8 @@ def process (msg):
     for item in rows:
         # print(item)
         row = {
-            'ID': item[0].strip('(').strip(')'),
             'Dir': item[1].strip('[').strip(']'),
+            'ID': item[0].strip('(').strip(')'),
             'Fr': item[2],
             'Band': item[3],
             'CC#': item[4],
