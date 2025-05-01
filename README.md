@@ -5,7 +5,4 @@ It can analyze logs from you and show you summarized band combinations of EUTRA,
 
 1. run "main_UE_Capa_Analyzer.py"
 2. paste "UE Capability" msg from QXDM or wireshark 3GPP decoder, and press "Execute" button.
-![image](https://user-images.githubusercontent.com/98713651/151720706-b3a27e8a-79d1-4934-8e46-776a091a61fe.png)
-
-3. press "Open" button that makes you load .txt files including the logs from QXDM or wireshark 3GPP decoder.
-![image](https://user-images.githubusercontent.com/98713651/151720737-529d7b8e-0164-4bd6-8e8c-215f92f51ce0.png)
+3. or press "Open" button that makes you load .txt files including the logs from QXDM or wireshark 3GPP decoder.
