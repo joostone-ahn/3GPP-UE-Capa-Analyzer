@@ -6,4 +6,4 @@ It can analyze logs from you and show you summarized band combinations of EUTRA,
 2. On 'Paste' tab, paste "UE Capability" msg from QXDM or wireshark 3GPP decoder, and press "Execute" button.
 3. On 'File' tab, press "Open" button that makes you load .txt files including the logs from QXDM or wireshark 3GPP decoder.
 
-![image](https://github.com/user-attachments/assets/ba9ef56c-e7f6-4b49-b3cc-02dbdfbf335f)
+![image](https://github.com/user-attachments/assets/f3f186b5-4eb7-484a-82e8-0dea390d2508)
