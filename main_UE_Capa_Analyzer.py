@@ -68,6 +68,96 @@ def process (msg):
         item_sort = RRC_items.sort_items(msg_nr)
         nr_featureSet = NR.extract_featureset(item_sort, msg_nr, nr_featureset_Id)
 
+    import pandas as pd
+    from tabulate import tabulate
+    table_fmt = 'github'
+
+    eutra_rows = []
+    for line in eutra_rst[3:-1]:
+        items = line.split()
+        row = {
+            'Ind': items[0].strip('[').strip(']'),
+            'DL': items[2],
+            'UL': items[4]
+        }
+        eutra_rows.append(row)
+    df_eutra = pd.DataFrame(eutra_rows)
+    tab_eutra = tabulate(df_eutra, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    for line in tab_eutra:
+        print(line)
+    eutra_rst = eutra_rst[:3] + tab_eutra
+
+    eutra_fs_rows = []
+    for line in eutra_featureSet[3:-1]:
+        items = line.split()
+        print(items)
+        row = {
+            'ID': items[0].strip('(').strip(')'),
+            'DL Layers': ' '.join(items[2:])
+        }
+        eutra_fs_rows.append(row)
+    df_eutra_fs = pd.DataFrame(eutra_fs_rows)
+    tab_eutra_fs = tabulate(df_eutra_fs, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    for line in tab_eutra_fs:
+        print(line)
+    eutra_featureSet = eutra_featureSet[:3] + tab_eutra_fs
+
+
+    mrdc_rows = []
+    for line in mrdc_rst[3:-1]:
+        items = line.split()
+        if len(items) < 6:
+            items = ['[]'] + items
+        srs_tx = ''
+        if 'x' not in items[-1]:
+            srs_tx = items[-1].strip('{').strip('}')
+        row = {
+            'Ind': items[0].strip('[').strip(']'),
+            'DL': items[2],
+            'UL': items[4],
+            'SRS Tx': srs_tx
+        }
+        mrdc_rows.append(row)
+    df_mrdc = pd.DataFrame(mrdc_rows)
+    tab_mrdc = tabulate(df_mrdc, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    for line in tab_mrdc:
+        print(line)
+    mrdc_rst = mrdc_rst[:3] + tab_mrdc
+
+    rows = []
+    for line in nr_featureSet[3:-1]:
+        items = line.split()
+        items = [x for x in items if x != '/']
+        # print(items)
+        cc_num = int(items[4].strip('CC'))
+        # print(cc_num)
+        rows.append(items[:11])
+        # print(rows[-1])
+        if cc_num > 1:
+            for i in range(cc_num-1):
+                rows.append(['','','','','']+items[11+(i*6):17+(i*6)])
+                # print(rows[-1])
+    nr_fs_rows = []
+    for item in rows:
+        print(item)
+        row = {
+            'ID': item[0].strip('(').strip(')'),
+            'Dir': item[1].strip('[').strip(']'),
+            'Fr': item[2],
+            'Band': item[3],
+            'CC#': item[4],
+            'BW': item[6],
+            'SCS': item[8],
+            'Layer#': item[9],
+            'Mod': item[10]
+        }
+        nr_fs_rows.append(row)
+    df_nr_fs = pd.DataFrame(nr_fs_rows)
+    tab_nr_fs = tabulate(df_nr_fs, headers='keys', tablefmt=table_fmt, showindex=False).split('\n')
+    for line in tab_nr_fs:
+        print(line)
+    nr_featureSet = nr_featureSet[:3] + tab_nr_fs
+
     return eutra_rst, eutra_featureSet, mrdc_rst, nr_featureSet, rst, debug
 
 
@@ -96,8 +186,8 @@ class MyApp(QWidget):
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('UE Capa Analyzer v.1.4')
-        self.setGeometry(110, 50, 1000, 850)
+        self.setWindowTitle('UE Capa Analyzer v.1.5')
+        self.setGeometry(110, 50, 1200, 850)
         self.show()
 
         # 시그널 슬롯 연결
@@ -242,7 +332,7 @@ class File_Tab(QWidget):
                     print("read fail")
                 for n in range(len(msg_all)):
                     msg_all[n] = msg_all[n].replace('\n', '')
-        print("OK")
+        # print("OK")
         msg, nothing = Extract_msg.extract_msg(msg_all, msg_type_list)
         # for n in msg:
         #     print(n)
@@ -283,26 +373,28 @@ class Result_tab(QWidget):
         self.LBL_MRDC_BC.setFont(BoldFont)
         self.DSP_MRDC_BC = QTextBrowser()
         self.DSP_MRDC_BC.setFont(CourierNewFont)
-        self.DSP_MRDC_BC.setFixedHeight(150)
+        self.DSP_MRDC_BC.setFixedHeight(200)
 
 
         self.LBL_EUTRA_FS = QLabel("EUTRA FEATURESET")
         self.LBL_EUTRA_FS.setFont(BoldFont)
+        self.LBL_EUTRA_FS.setFixedWidth(400)
         self.DSP_EUTRA_FS = QTextBrowser()
         self.DSP_EUTRA_FS.setFont(CourierNewFont)
-        self.DSP_EUTRA_FS.setFixedHeight(100)
+        self.DSP_EUTRA_FS.setFixedHeight(180)
+        self.DSP_EUTRA_FS.setFixedWidth(400)
 
         self.LBL_NR_FS = QLabel("NR FEATURESET")
         self.LBL_NR_FS.setFont(BoldFont)
         self.DSP_NR_FS = QTextBrowser()
         self.DSP_NR_FS.setFont(CourierNewFont)
-        self.DSP_NR_FS.setFixedHeight(100)
+        self.DSP_NR_FS.setFixedHeight(180)
 
-        self.LBL_DEBUG = QLabel("DEBUG MSG")
-        self.LBL_DEBUG.setFont(BoldFont)
-        self.DSP_DEBUG = QTextBrowser()
-        self.DSP_DEBUG.setFont(CourierNewFont)
-        self.DSP_DEBUG.setFixedHeight(100)
+        # self.LBL_DEBUG = QLabel("DEBUG MSG")
+        # self.LBL_DEBUG.setFont(BoldFont)
+        # self.DSP_DEBUG = QTextBrowser()
+        # self.DSP_DEBUG.setFont(CourierNewFont)
+        # self.DSP_DEBUG.setFixedHeight(100)
 
         self.btn_save = QPushButton("Save As..")
         self.btn_save.setFixedWidth(100)
@@ -338,9 +430,9 @@ class Result_tab(QWidget):
         vbox.addLayout(hbox1)
         vbox.addLayout(hbox2)
         vbox.addWidget(QLabel())
-        vbox.addWidget(self.LBL_DEBUG)
-        vbox.addWidget(self.DSP_DEBUG)
-        vbox.addWidget(QLabel())
+        # vbox.addWidget(self.LBL_DEBUG)
+        # vbox.addWidget(self.DSP_DEBUG)
+        # vbox.addWidget(QLabel())
         vbox.addLayout(hbox3)
         vbox.addWidget(QLabel())
         vbox.addStretch()
@@ -367,8 +459,8 @@ class Result_tab(QWidget):
             file_contents += self.format(self.LBL_EUTRA_FS, self.DSP_EUTRA_FS)
         if self.DSP_NR_FS.toPlainText() != '':
             file_contents += self.format(self.LBL_NR_FS, self.DSP_NR_FS)
-        if self.DSP_DEBUG.toPlainText() != '':
-            file_contents += self.format(self.LBL_DEBUG, self.DSP_DEBUG)
+        # if self.DSP_DEBUG.toPlainText() != '':
+        #     file_contents += self.format(self.LBL_DEBUG, self.DSP_DEBUG)
 
         save_path = QFileDialog.getSaveFileName(self,'Save file','',"Text files(*.txt)")
         fp = open(save_path[0], "w")
@@ -396,14 +488,14 @@ class Result_tab(QWidget):
         self.DSP_EUTRA_FS.setPlainText("")
         self.LBL_NR_FS.setText("NR FEATURESET")
         self.DSP_NR_FS.setPlainText("")
-        self.LBL_DEBUG.setText("DEBUG MSG")
-        self.DSP_DEBUG.setPlainText("")
+        # self.LBL_DEBUG.setText("DEBUG MSG")
+        # self.DSP_DEBUG.setPlainText("")
         self.LBL_SAVED.setText("")
 
     @pyqtSlot(list, name='Nothing')
     def slot_nothing(self, v:list):
         self.init_UI_rst()
-        msg_filter(v, self.LBL_DEBUG, self.DSP_DEBUG)
+        # msg_filter(v, self.LBL_DEBUG, self.DSP_DEBUG)
 
     @pyqtSlot(list, name='DSP RESULT')
     def slot_rst(self, v:list):
@@ -413,7 +505,7 @@ class Result_tab(QWidget):
         msg_filter(v[1], self.LBL_EUTRA_FS, self.DSP_EUTRA_FS)
         msg_filter(v[2], self.LBL_MRDC_BC, self.DSP_MRDC_BC)
         msg_filter(v[3], self.LBL_NR_FS, self.DSP_NR_FS)
-        msg_filter(v[5], self.LBL_DEBUG, self.DSP_DEBUG)
+        # msg_filter(v[5], self.LBL_DEBUG, self.DSP_DEBUG)
 
         #VENDOR
         self.LBL_VENDOR.setText("UE Capa Decoding Result (" + v[4].replace(' ','') + ")")
@@ -426,7 +518,8 @@ def msg_filter(v, par1, par2):
     v_filtered = []
     v_lbl = ''
     for n in v:
-        if '===' not in n and '---' not in n:
+        # if '===' not in n and '---' not in n:
+        if '===' not in n:
             if 'BAND COMB' in n or 'FEATURESET' in n:
                 v_lbl = n
             elif 'DEBUG' in n:

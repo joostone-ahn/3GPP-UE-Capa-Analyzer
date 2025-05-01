@@ -57,13 +57,14 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
     # print(len(band_comb_layers_list))
 
     for m in item_sort:
-        name = m['name'].split(":")[0]
         if name == 'bandParameterList-v10i0':
             band_comb_layers = []
             open_line = m['range'][0]
             close_line = m['range'][1]
             comb_id = int(msg[open_line-3].split(' ')[1])
             for n in range(open_line,close_line+1):
+                # print(msg[n])
+                # print(msg[n+1])
                 if 'CA-MIMO-ParametersDL-v10i0' in msg[n]:
                     if 'fourLayerTM3-TM4-r10' in msg[n+1]:
                         band_comb_layers.append('(4L)')
@@ -171,8 +172,9 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
 
     featureSetDLPerCC = []
     for m in item_sort:
-        name = m['name'].split(":")[0]
-        if name == 'featureSetsDL-PerCC-r15':
+        # print(m)
+        if 'featureSetsDL-PerCC-r15' in m['name']:
+            # print(m)
             open_line = m['range'][0]
             close_line = m['range'][1]
             for n in range(open_line,close_line+1):

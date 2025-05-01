@@ -206,21 +206,59 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
     extra_comb_UL_list = extra_comb_UL_filtered
     # print(extra_comb_UL_list)
 
-
     mrdc_DL_comb = []
     mrdc_item_max = 0
-    for n in range(len(mrdc_comb_DL_list)):
+
+    for comb in mrdc_comb_DL_list:
         mrdc_item = '[DL] DC_'
-        for m in range(len(mrdc_comb_DL_list[n])):
-            if len(mrdc_comb_DL_list[n])-m > 2:
-                mrdc_item += mrdc_comb_DL_list[n][m] + '-'
-            elif len(mrdc_comb_DL_list[n])-m == 2:
-                mrdc_item += mrdc_comb_DL_list[n][m] + '_'
-            elif len(mrdc_comb_DL_list[n])-m == 1:
-                mrdc_item += mrdc_comb_DL_list[n][m]
-                if len(mrdc_item) >= mrdc_item_max:
-                    mrdc_item_max = len(mrdc_item)
-                mrdc_DL_comb.append(mrdc_item)
+        band_eutra = []
+        band_nr = []
+
+        for band in comb:
+            if band.startswith('n'):
+                band_nr.append(band)
+            else:
+                band_eutra.append(band)
+
+        # LTE (E-UTRA) 밴드 조합
+        if band_eutra:
+            mrdc_item += '-'.join(band_eutra)
+
+        # NR 밴드 조합
+        if band_nr:
+            if band_eutra:
+                mrdc_item += '_'
+            mrdc_item += '-'.join(band_nr)
+
+        if len(band_nr) > 1:
+            mrdc_item += '*'
+        else:
+            if 'A' not in band_nr[0]:
+                mrdc_item += '*'
+
+        mrdc_DL_comb.append(mrdc_item)
+        if len(mrdc_item) > mrdc_item_max:
+            mrdc_item_max = len(mrdc_item)
+
+        # print(mrdc_item)
+
+    # mrdc_DL_comb = []
+    # mrdc_item_max = 0
+    # for n in range(len(mrdc_comb_DL_list)):
+    #     mrdc_item = '[DL] DC_'
+    #     for m in range(len(mrdc_comb_DL_list[n])):
+    #         print(mrdc_comb_DL_list[n])
+    #         print(m)
+    #         if len(mrdc_comb_DL_list[n])-m > 2:
+    #             mrdc_item += mrdc_comb_DL_list[n][m] + '-'
+    #         elif len(mrdc_comb_DL_list[n])-m == 2:
+    #             mrdc_item += mrdc_comb_DL_list[n][m] + '_'
+    #         elif len(mrdc_comb_DL_list[n])-m == 1:
+    #             mrdc_item += mrdc_comb_DL_list[n][m]
+    #             if len(mrdc_item) >= mrdc_item_max:
+    #                 mrdc_item_max = len(mrdc_item)
+    #             mrdc_DL_comb.append(mrdc_item)
+    #             print(mrdc_item)
     # for n in mrdc_DL_comb:
     #     print(n)
 
@@ -228,18 +266,50 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
         mrdc_item_max = eutra_item_max
 
     extra_DL_comb = []
-    for n in range(len(extra_comb_DL_list)):
+
+    for comb in extra_comb_DL_list:
         extra_item = '[DL] DC_'
-        for m in range(len(extra_comb_DL_list[n])):
-            if len(extra_comb_DL_list[n])-m > 2:
-                extra_item += extra_comb_DL_list[n][m] + '-'
-            elif len(extra_comb_DL_list[n])-m == 2:
-                extra_item += extra_comb_DL_list[n][m] + '_'
-            elif len(extra_comb_DL_list[n])-m == 1:
-                extra_item += extra_comb_DL_list[n][m]
-                extra_DL_comb.append(extra_item)
-    # for n in extra_DL_comb:
-    #     print(n)
+        band_eutra = []
+        band_nr = []
+
+        for band in comb:
+            if band.startswith('n'):
+                band_nr.append(band)
+            else:
+                band_eutra.append(band)
+
+        # LTE (E-UTRA) 밴드 조합
+        if band_eutra:
+            extra_item += '-'.join(band_eutra)
+
+        # NR 밴드 조합
+        if band_nr:
+            if band_eutra:
+                extra_item += '_'
+            extra_item += '-'.join(band_nr)
+
+        # NR 밴드가 2개 이상이면 * 붙임
+        if len(band_nr) > 1:
+            extra_item += '*'
+        else:
+            if 'A' not in band_nr[0]:
+                extra_item += '*'
+
+        extra_DL_comb.append(extra_item)
+
+    # extra_DL_comb = []
+    # for n in range(len(extra_comb_DL_list)):
+    #     extra_item = '[DL] DC_'
+    #     for m in range(len(extra_comb_DL_list[n])):
+    #         if len(extra_comb_DL_list[n])-m > 2:
+    #             extra_item += extra_comb_DL_list[n][m] + '-'
+    #         elif len(extra_comb_DL_list[n])-m == 2:
+    #             extra_item += extra_comb_DL_list[n][m] + '_'
+    #         elif len(extra_comb_DL_list[n])-m == 1:
+    #             extra_item += extra_comb_DL_list[n][m]
+    #             extra_DL_comb.append(extra_item)
+    # # for n in extra_DL_comb:
+    # #     print(n)
 
     mrdc_UL_comb = []
     for n in range(len(mrdc_comb_UL_list)):
@@ -266,55 +336,157 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
             elif len(extra_comb_UL_list[n])-m == 1:
                 extra_item += extra_comb_UL_list[n][m]
                 extra_UL_comb.append(extra_item)
-    # for n in extra_UL_comb:
-    #     print(n)
 
-    mrdc_rst =[]
+    mrdc_rst = []
     mrdc_rst_max = 0
+
+    # extra_comb 를 인덱스 기준으로 묶기
+    extra_map = {}
+    for i, idx in enumerate(extra_comb_DL_id):
+        if idx not in extra_map:
+            extra_map[idx] = []
+        extra_map[idx].append((extra_DL_comb[i], extra_UL_comb[i]))
+
+    # 본문 조합 출력 (확장 포함)
     for n in range(len(mrdc_DL_comb)):
-        index_num = '[' + str(n) + ']'
-        index_num = f'{index_num:>5}'
-        sp = mrdc_item_max - len(mrdc_DL_comb[n])
-        rst = index_num + ' ' + mrdc_DL_comb[n] + ' ' * sp + '  '
-        rst += mrdc_UL_comb[n]
-        if len(rst) >= mrdc_rst_max :
-            mrdc_rst_max = len(rst)
-        mrdc_rst.append(rst)
+        index_num = f'[{n}]'.rjust(5)
+        dl_main = mrdc_DL_comb[n]
+        ul_main = mrdc_UL_comb[n]
+        space_main = mrdc_item_max - len(dl_main)
+
+        line = f'{index_num} {dl_main}{" " * space_main}  {ul_main}'
+        if len(line) >= mrdc_rst_max:
+            mrdc_rst_max = len(line)
+        mrdc_rst.append(line)
+
+        # 확장 조합 있는 경우 출력
+        if n in extra_map:
+            for dl_extra, ul_extra in extra_map[n]:
+                space_extra = mrdc_item_max - len(dl_extra)
+                line = f'{" " * 5} {dl_extra}{" " * space_extra}  {ul_extra}'
+                if len(line) >= mrdc_rst_max:
+                    mrdc_rst_max = len(line)
+                mrdc_rst.append(line)
+
+    # SRS-TxPortSwitch 정보 붙이기
     for n in range(len(mrdc_rst)):
         sp = mrdc_rst_max - len(mrdc_rst[n])
         try:
             if band_comb_list_v1540[n]:
-                mrdc_rst[n] += ' '*sp + '  {' + band_comb_list_v1540[n][0] + '}'
+                mrdc_rst[n] += ' ' * sp + '  {' + band_comb_list_v1540[n][0] + '}'
             else:
                 mrdc_rst[n] += ' ' * sp + '  {x}'
         except IndexError:
             mrdc_rst[n] += ' ' * sp + '  {x}'
 
-    if extra_comb_DL_id:
-        mrdc_rst.append('')
-        mrdc_rst.append('*The following items have additional featureSet')
-
-    extra_rst =[]
-    index_num_history = []
-    for n in range(len(extra_comb_DL_id)):
-        index_num = '*[' + str(extra_comb_DL_id[n]) + ']'
-        index_num = f'{index_num:>5}'
-        if index_num not in index_num_history:
-            sp = mrdc_item_max - len(mrdc_DL_comb[extra_comb_DL_id[n]])
-            rst = index_num + ' ' + mrdc_DL_comb[extra_comb_DL_id[n]] + ' ' * sp + '  '
-            rst += mrdc_UL_comb[extra_comb_DL_id[n]]
-            extra_rst.append(rst)
-        sp = mrdc_item_max - len(extra_DL_comb[n])
-        extra_rst.append("    > "+ extra_DL_comb[n] + ' ' * sp + '  ' + extra_UL_comb[n])
-        index_num_history.append(index_num)
-    # for n in extra_rst:
-    #     print(n)
-
+    # 헤더 붙이기
     mrdc_title = ['=' * 80]
-    mrdc_title += ['MRDC BAND COMB - TOTAL: %d  *(): FeatureSetId / {}: SRS-TxPortSwitch'% len(band_comb_DL_list)]
+    mrdc_title += [f'MRDC BAND COMB - TOTAL: {len(band_comb_list_v1540)}  *(): FeatureSetId / {{}}: SRS-TxPortSwitch']
     mrdc_title += ['=' * 80]
-    mrdc_rst = mrdc_title + mrdc_rst + extra_rst
+    mrdc_rst = mrdc_title + mrdc_rst
     mrdc_rst.append('=' * 80)
+
+    # for line in mrdc_rst:
+    #     print(line)
+
+    # mrdc_rst =[]
+    # mrdc_rst_max = 0
+    # for n in range(len(mrdc_DL_comb)):
+    #     index_num = '[' + str(n) + ']'
+    #     index_num = f'{index_num:>5}'
+    #     sp = mrdc_item_max - len(mrdc_DL_comb[n])
+    #     rst = index_num + ' ' + mrdc_DL_comb[n] + ' ' * sp + '  '
+    #     rst += mrdc_UL_comb[n]
+    #     if len(rst) >= mrdc_rst_max :
+    #         mrdc_rst_max = len(rst)
+    #     mrdc_rst.append(rst)
+    # for n in range(len(mrdc_rst)):
+    #     sp = mrdc_rst_max - len(mrdc_rst[n])
+    #     try:
+    #         if band_comb_list_v1540[n]:
+    #             mrdc_rst[n] += ' '*sp + '  {' + band_comb_list_v1540[n][0] + '}'
+    #         else:
+    #             mrdc_rst[n] += ' ' * sp + '  {x}'
+    #     except IndexError:
+    #         mrdc_rst[n] += ' ' * sp + '  {x}'
+    #
+    # if extra_comb_DL_id:
+    #     mrdc_rst.append('')
+    #     mrdc_rst.append('*The following items have additional featureSet')
+    #
+    #     extra_rst = []
+    #
+    #     # index별 그룹 묶기
+    #     index_groups = []
+    #     prev_index = None
+    #     group = []
+    #
+    #     for n in range(len(extra_comb_DL_id)):
+    #         index = extra_comb_DL_id[n]
+    #
+    #         if index != prev_index:
+    #             if group:
+    #                 index_groups.append((prev_index, group))
+    #             group = [n]  # 새로운 index 그룹 시작
+    #             prev_index = index
+    #         else:
+    #             group.append(n)
+    #
+    #     # 마지막 그룹 처리
+    #     if group:
+    #         index_groups.append((prev_index, group))
+    #
+    #     # 최대 index 길이 계산
+    #     index_num_max_len = max(len(f'[{i}]') for i, _ in index_groups)
+    #
+    #     # 그룹 출력
+    #     for idx, group_indices in index_groups:
+    #         index_str = f'[{idx}]'.rjust(index_num_max_len)
+    #
+    #         # 대표 조합
+    #         dl_part = mrdc_DL_comb[idx]
+    #         ul_part = mrdc_UL_comb[idx]
+    #         space = mrdc_item_max - len(dl_part)
+    #         line = f'{index_str} {dl_part}{" " * space}  {ul_part}'
+    #         extra_rst.append(line)
+    #
+    #         # 하위 조합들 출력
+    #         for i in group_indices:
+    #             dl_extra = extra_DL_comb[i]
+    #             ul_extra = extra_UL_comb[i]
+    #             space = mrdc_item_max - len(dl_extra)
+    #             line = f'{" " * index_num_max_len} {dl_extra}{" " * space}  {ul_extra}'
+    #             extra_rst.append(line)
+    #
+    #     # 출력
+    #     for line in extra_rst:
+    #         print(line)
+    #
+    # # 출력용 리스트 완성됨
+    # # for line in extra_rst:
+    # #     print(line)
+    #
+    # # extra_rst =[]
+    # # index_num_history = []
+    # # for n in range(len(extra_comb_DL_id)):
+    # #     index_num = '*[' + str(extra_comb_DL_id[n]) + ']'
+    # #     index_num = f'{index_num:>5}'
+    # #     if index_num not in index_num_history:
+    # #         sp = mrdc_item_max - len(mrdc_DL_comb[extra_comb_DL_id[n]])
+    # #         rst = index_num + ' ' + mrdc_DL_comb[extra_comb_DL_id[n]] + ' ' * sp + '  '
+    # #         rst += mrdc_UL_comb[extra_comb_DL_id[n]]
+    # #         extra_rst.append(rst)
+    # #     sp = mrdc_item_max - len(extra_DL_comb[n])
+    # #     extra_rst.append("    > "+ extra_DL_comb[n] + ' ' * sp + '  ' + extra_UL_comb[n])
+    # #     index_num_history.append(index_num)
+    # # # for n in extra_rst:
+    # # #     print(n)
+    #
+    # mrdc_title = ['=' * 80]
+    # mrdc_title += ['MRDC BAND COMB - TOTAL: %d  *(): FeatureSetId / {}: SRS-TxPortSwitch'% len(band_comb_DL_list)]
+    # mrdc_title += ['=' * 80]
+    # mrdc_rst = mrdc_title + mrdc_rst + extra_rst
+    # mrdc_rst.append('=' * 80)
 
     NR_featureSet = []
     NR_featureSet.append(NR_featureSet_DL)
