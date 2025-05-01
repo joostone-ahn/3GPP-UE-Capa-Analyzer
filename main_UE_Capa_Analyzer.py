@@ -76,10 +76,32 @@ def process (msg):
     eutra_rows = []
     for line in eutra_rst[3:-1]:
         items = line.split()
+        if '_' in items[2]:
+            items[2] = ''.join(items[2].split('_')[1:])
+        if '_' in items[4]:
+            items[4] = ''.join(items[4].split('_')[1:])
+
+        cc_num = 0
+        cc_str = ''
+        if '-' in items[4]:
+            ul_bands = items[4].split('-')
+        else:
+            ul_bands = [items[4]]
+        # print(ul_bands)
+        for ul_band in ul_bands:
+            # print(ul_band)
+            if 'A' in ul_band:
+                cc_num += 1
+            elif 'C' in ul_band:
+                cc_num += 2
+        if cc_num > 1:
+            cc_str = f'{cc_num}CC'
+
         row = {
             'Ind': items[0].strip('[').strip(']'),
-            'DL': items[2],
-            'UL': items[4]
+            'DL LTE': items[2],
+            'UL LTE': items[4],
+            'UL LTE CA': cc_str
         }
         eutra_rows.append(row)
     df_eutra = pd.DataFrame(eutra_rows)
@@ -115,6 +137,13 @@ def process (msg):
         if 'x' not in items[-1]:
             srs_tx = items[-1].strip('{').strip('}')
 
+        if '_' in items[2]:
+            dl_lte = items[2].split('_')[1]
+            dl_nr =items[2].split('_')[2]
+        if '_' in items[4]:
+            ul_lte = items[4].split('_')[1]
+            ul_nr =items[4].split('_')[2]
+
         cc_str = ''
         cc_num = 0
         if '*' in items[2]:
@@ -135,9 +164,11 @@ def process (msg):
 
         row = {
             'Ind': items[0].strip('[').strip(']'),
-            'DL': items[2].strip('*'),
-            'UL': items[4],
+            'DL LTE': dl_lte,
+            'DL NR': dl_nr.strip('*'),
             'DL NR CA': cc_str,
+            'UL LTE': ul_lte,
+            'UL NR': ul_nr,
             'UL SRS Tx': srs_tx
         }
         mrdc_rows.append(row)
@@ -398,7 +429,7 @@ class Result_tab(QWidget):
         self.LBL_MRDC_BC.setFont(BoldFont)
         self.DSP_MRDC_BC = QTextBrowser()
         self.DSP_MRDC_BC.setFont(CourierNewFont)
-        self.DSP_MRDC_BC.setFixedHeight(214)
+        self.DSP_MRDC_BC.setFixedHeight(218)
 
 
         self.LBL_EUTRA_FS = QLabel("EUTRA FEATURESET")
