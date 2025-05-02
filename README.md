@@ -1,5 +1,3 @@
----
-
 # 📡 3GPP-UE-Capa-Analyzer
 
 A powerful and intuitive tool for parsing and visualizing **UE Capability Information** based on 3GPP specifications — **TS 36.331 (LTE)** and **TS 38.331 (NR)**.
