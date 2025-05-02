@@ -152,7 +152,7 @@ def extract_band_combo(item_sort,msg,mrdc_item_max):
 
     eutra_rst =[]
     eutra_rst.append('=' * 80)
-    eutra_rst.append('EUTRA BAND COMB - TOTAL: %d  *(): Layers' % len(band_comb_DL_list))
+    eutra_rst.append('EUTRA BAND COMB - TOTAL: %d' % len(band_comb_DL_list))
     eutra_rst.append('=' * 80)
     # print(eutra_rst)
     for n in range(len(eutra_DL_comb)):

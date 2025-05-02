@@ -82,7 +82,6 @@ def process (msg):
             items[4] = ''.join(items[4].split('_')[1:])
 
         cc_num = 0
-        cc_str = ''
         if '-' in items[4]:
             ul_bands = items[4].split('-')
         else:
@@ -95,13 +94,12 @@ def process (msg):
             elif 'C' in ul_band:
                 cc_num += 2
         if cc_num > 1:
-            cc_str = f'{cc_num}CC'
+            items[4] += '*'
 
         row = {
             'Ind': items[0].strip('[').strip(']'),
             'DL LTE': items[2],
-            'UL LTE': items[4],
-            'UL LTE CA': cc_str
+            'UL LTE': items[4]
         }
         eutra_rows.append(row)
     df_eutra = pd.DataFrame(eutra_rows)
@@ -146,32 +144,13 @@ def process (msg):
             ul_lte = items[4].split('_')[1]
             ul_nr =items[4].split('_')[2]
 
-        cc_str = ''
-        cc_num = 0
-        if '*' in items[2]:
-            nr_part = items[2].split('_')[-1]
-            if '-' in nr_part:
-                nr_bands = nr_part.split('-')
-            else:
-                nr_bands = [nr_part]
-            # print(nr_bands)
-            for nr_band in nr_bands:
-                # print(nr_band)
-                if 'A' in nr_band:
-                    cc_num += 1
-                elif 'C' in nr_band:
-                    cc_num += 2
-        if cc_num > 1:
-            cc_str = f'{cc_num}CC'
-
         row = {
             'Ind': items[0].strip('[').strip(']'),
             'DL LTE': dl_lte,
-            'DL NR': dl_nr.strip('*'),
-            'DL NR CA': cc_str,
+            'DL NR': dl_nr,
             'UL LTE': ul_lte,
             'UL NR': ul_nr,
-            'UL SRS Tx': srs_tx
+            'SRS Tx': srs_tx
         }
         mrdc_rows.append(row)
     df_mrdc = pd.DataFrame(mrdc_rows)
@@ -244,7 +223,7 @@ class MyApp(QWidget):
 
         self.setLayout(vbox)
 
-        self.setWindowTitle('UE Capa Analyzer v.1.5')
+        self.setWindowTitle('UE Capa Analyzer v.2.0')
         self.setGeometry(110, 50, 1200, 850)
         self.show()
 
