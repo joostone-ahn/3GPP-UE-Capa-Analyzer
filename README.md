@@ -35,7 +35,21 @@ python main_UE_Capa_Analyzer.py
 
 ---
 
-![image](https://github.com/user-attachments/assets/1bfc1212-aaec-4edf-aa06-3f6ea8b31869)
+### 📊 Interpreting Band Combination and FeatureSet Tables
+
+The analyzer summarizes supported band combinations and layer configurations as shown below.
+
+* **EUTRA BAND COMB** shows LTE-only combinations. The number in parentheses like `1A(4L)` directly indicates the number of layers (**4 Layers**) per band.
+* **MRDC BAND COMB** (EN-DC) includes both LTE and NR bands. Here, the number in parentheses (e.g., `n78C(5)`) refers to the **FeatureSet ID**, not the layer count.
+
+> 📝 **Note:**
+> For MRDC combinations, refer to the **EUTRA FEATURESET** and **NR FEATURESET** tables below to find the actual layer count and modulation per FeatureSet ID.
+
+---
+
+### 📷 Visual Sample (from tool output)
+
+![image](https://github.com/user-attachments/assets/8f9ab7c6-a7ba-429d-8491-cfb608857c3c)
 
 ![image](https://github.com/user-attachments/assets/062f4c95-a540-4817-aa5a-ddc8f8e6d9c6)
 
