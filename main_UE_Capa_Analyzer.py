@@ -423,7 +423,7 @@ class Result_tab(QWidget):
         self.LBL_EUTRA_BC.setFont(BoldFont)
         self.DSP_EUTRA_BC = QTextBrowser()
         self.DSP_EUTRA_BC.setFont(CourierNewFont)
-        self.DSP_EUTRA_BC.setFixedHeight(158)
+        self.DSP_EUTRA_BC.setFixedHeight(218)
 
 
         self.LBL_MRDC_BC = QLabel("MRDC BAND COMB")
@@ -438,14 +438,14 @@ class Result_tab(QWidget):
         self.LBL_EUTRA_FS.setFixedWidth(400)
         self.DSP_EUTRA_FS = QTextBrowser()
         self.DSP_EUTRA_FS.setFont(CourierNewFont)
-        self.DSP_EUTRA_FS.setFixedHeight(158)
+        self.DSP_EUTRA_FS.setFixedHeight(188)
         self.DSP_EUTRA_FS.setFixedWidth(400)
 
         self.LBL_NR_FS = QLabel("NR FEATURESET")
         self.LBL_NR_FS.setFont(BoldFont)
         self.DSP_NR_FS = QTextBrowser()
         self.DSP_NR_FS.setFont(CourierNewFont)
-        self.DSP_NR_FS.setFixedHeight(158)
+        self.DSP_NR_FS.setFixedHeight(188)
 
         # self.LBL_DEBUG = QLabel("DEBUG MSG")
         # self.LBL_DEBUG.setFont(BoldFont)
@@ -593,5 +593,6 @@ def msg_filter(v, par1, par2):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     ex = MyApp()
     sys.exit(app.exec_())
