@@ -85,9 +85,9 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
             # print(len(band_comb_UL_list), band_comb_UL_list[-1])
             # print(msg[close_line + 1])
             FeatureSet_comb_Id.append(int(msg[close_line + 1].split()[1]))
-    # print(band_comb_DL_list)
-    # print(band_comb_UL_list)
-    # print(FeatureSet_comb_Id)
+    # print(len(band_comb_DL_list))
+    # print(len(band_comb_UL_list))
+    # print(len(FeatureSet_comb_Id))
 
 
     band_comb_list_v1540 = []
