@@ -11,9 +11,7 @@ This tool enables engineers and analysts to extract and summarize supported **ba
 * Support for **EUTRA**, **NR**, and **MRDC** summaries in a user-friendly format.
 * GUI-based interaction for quick execution and log loading.
 
-
 ---
-
 
 ### 🚀 How to Use
 
@@ -35,9 +33,7 @@ python main_UE_Capa_Analyzer.py
 * Click **'Open'** to load a `.txt` file that contains logs.
 * The analyzer will parse and display the supported bands and combinations automatically.
 
-
 ---
-
 
 ### 📊 Interpreting Band Combination and FeatureSet Tables
 
@@ -49,13 +45,12 @@ The analyzer summarizes supported band combinations and layer configurations as 
 > 📝 **Note:**
 > For MRDC combinations, refer to the **EUTRA FEATURESET** and **NR FEATURESET** tables below to find the actual layer count and modulation per FeatureSet ID.
 
-
 ---
-
 
 ### 📷 Visual Sample (from tool output)
 
 ![image](https://github.com/user-attachments/assets/8f9ab7c6-a7ba-429d-8491-cfb608857c3c)
 
-![image](https://github.com/user-attachments/assets/062f4c95-a540-4817-aa5a-ddc8f8e6d9c6)
+![image](https://github.com/user-attachments/assets/b1c88de5-a6f6-4fee-8c10-0f1c1947f5b9)
+
 
