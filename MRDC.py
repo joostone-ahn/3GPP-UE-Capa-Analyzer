@@ -74,6 +74,8 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
                     band_item_UL_list.append(band_item + msg[n].split(" ")[1].upper())
 
             if len(band_item_DL_list) != len(band_item_UL_list):
+                # print('DL', band_item_DL_list)
+                # print('UL', band_item_UL_list)
                 band_item_UL_list = band_item_DL_list
                 # print('DL', band_item_DL_list)
                 # print('UL', band_item_UL_list)
