@@ -73,10 +73,30 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
                 elif 'ca-BandwidthClassUL-NR' in msg[n]:
                     band_item_UL_list.append(band_item + msg[n].split(" ")[1].upper())
 
+            import re
             if len(band_item_DL_list) != len(band_item_UL_list):
                 # print('DL', band_item_DL_list)
                 # print('UL', band_item_UL_list)
-                band_item_UL_list = band_item_DL_list
+                ul_list_new = []
+                for n in range(len(band_item_DL_list)):
+                    if n < len(band_item_DL_list)-1:
+                        dl_band = ''.join(re.findall(r'\d+', band_item_DL_list[n]))
+                        ul_band = ''.join(re.findall(r'\d+', band_item_UL_list[n]))
+                        if dl_band == ul_band:
+                            ul_list_new.append(band_item_UL_list[n])
+                        else:
+                            ul_list_new.append(band_item_DL_list[n])
+                            # print('*DL_band_added')
+                    else:
+                        dl_band = ''.join(re.findall(r'\d+', band_item_DL_list[n]))
+                        ul_band = ''.join(re.findall(r'\d+', band_item_UL_list[n-1]))
+                        if dl_band == ul_band:
+                            ul_list_new.append(band_item_UL_list[n-1])
+                        else:
+                            ul_list_new.append(band_item_DL_list[n])
+                            # print('*DL_band_added')
+                    # print(ul_list_new)
+                band_item_UL_list = ul_list_new
                 # print('DL', band_item_DL_list)
                 # print('UL', band_item_UL_list)
             band_comb_DL_list.append(band_item_DL_list)
