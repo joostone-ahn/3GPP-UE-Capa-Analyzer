@@ -53,6 +53,8 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
             close_line = m['range'][1]
             count = -1
             for n in range(open_line,close_line+1):
+                # if len(band_comb_UL_list) == 21:
+                #     print(msg[n])
                 if 'bandEUTRA' in msg[n]:
                     band_item = ''
                     band_item = msg[n].split(" ")[1]
@@ -70,8 +72,15 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
                     band_item_DL_list.append(band_item + msg[n].split(" ")[1].upper())
                 elif 'ca-BandwidthClassUL-NR' in msg[n]:
                     band_item_UL_list.append(band_item + msg[n].split(" ")[1].upper())
+
+            if len(band_item_DL_list) != len(band_item_UL_list):
+                band_item_UL_list = band_item_DL_list
+                # print('DL', band_item_DL_list)
+                # print('UL', band_item_UL_list)
             band_comb_DL_list.append(band_item_DL_list)
             band_comb_UL_list.append(band_item_UL_list)
+
+            # print(len(band_comb_UL_list), band_comb_UL_list[-1])
             # print(msg[close_line + 1])
             FeatureSet_comb_Id.append(int(msg[close_line + 1].split()[1]))
     # print(band_comb_DL_list)
@@ -106,7 +115,17 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
             FeatureSet_UL_item_list = []
             open_line = m['range'][0]
             close_line = m['range'][1]
-            for n in range(open_line,close_line+1):
+
+            # fs_num_list =[]
+            # for n in range(open_line,close_line+1):
+            #     # if len(FeatureSet_comb_UL_list) <= 8:
+            #     #     print(msg[n])
+            #     if 'FeatureSetsPerBand:' in msg[n]:
+            #         fs_num = int(msg[n].split(':')[1].split('item')[0].strip())
+            #         fs_num_list.append(fs_num)
+            # print(fs_num_list)
+
+            for n in range(open_line, close_line + 1):
                 if 'downlinkSetEUTRA' in msg[n]:
                     FeatureSet_DL_item_list.append(msg[n].split(" ")[1])
                 elif 'uplinkSetEUTRA' in msg[n]:
@@ -115,12 +134,26 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
                     FeatureSet_DL_item_list.append(msg[n].split(" ")[1])
                 elif 'uplinkSetNR' in msg[n]:
                     FeatureSet_UL_item_list.append(msg[n].split(" ")[1])
+            # print(FeatureSet_UL_item_list)
+
+            # fs_UL_item_list = []
+            # idx = 0
+            # for fs_count in fs_num_list:
+            #     group = FeatureSet_UL_item_list[idx:idx+fs_count]
+            #     unique = list(set(group))
+            #     if len(unique) == 1:
+            #         fs_UL_item_list.append(unique[0])
+            #     else:
+            #         print('*'*100)
+            #         fs_UL_item_list.append(unique)
+            #     idx += fs_count
+            # print(fs_UL_item_list)
+
             FeatureSet_comb_DL_list.append(FeatureSet_DL_item_list)
             FeatureSet_comb_UL_list.append(FeatureSet_UL_item_list)
+
     # print(FeatureSet_comb_DL_list)
     # print(FeatureSet_comb_UL_list)
-
-
 
 
     mrdc_comb_DL_list = []
@@ -154,6 +187,9 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
     extra_comb_UL_list = []
     NR_featureSet_UL = []
     for m in range(len(band_comb_UL_list)):
+        # print(FeatureSet_comb_Id[m])
+        # print(FeatureSet_comb_UL_list[FeatureSet_comb_Id[m]])
+        # print(band_comb_UL_list[m])
         weight = int(len(FeatureSet_comb_UL_list[FeatureSet_comb_Id[m]]) / len(band_comb_UL_list[m]))
         for o in range(weight):
             mrdc_item_list = []
@@ -166,10 +202,12 @@ def extract_band_combo(item_sort,msg, eutra_item_max):
                         NR_featureSet_UL.append(mrdc_item)
             if o == 0:
                 mrdc_comb_UL_list.append(mrdc_item_list)
+                # print('mrdc', mrdc_comb_UL_list[-1])
             else:
                 extra_comb_UL_list.append(mrdc_item_list)
-    # print(mrdc_comb_UL_list)
-    # print(extra_comb_UL_list)
+                # print('extra', extra_comb_UL_list[-1])
+
+
 
     # # MRDC Combo 가 FeatureSet 3개 갖는 경우 예외처리 테스트
     # extra_comb_DL_list = [['1A(1)', '5A(1)', 'n78A(1)'], ['1A(1)', '5A(1)', 'n78A(1)'], ['1A(2)', '5A(1)', 'n78A(1)'], ['1A(2)', '5A(1)', 'n78A(1)']]

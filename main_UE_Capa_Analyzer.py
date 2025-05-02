@@ -138,6 +138,7 @@ def process (msg):
         if 'x' not in items[-1]:
             srs_tx = items[-1].strip('{').strip('}')
 
+        # print(items)
         if '_' in items[2]:
             dl_lte = items[2].split('_')[1]
             dl_nr =items[2].split('_')[2]
