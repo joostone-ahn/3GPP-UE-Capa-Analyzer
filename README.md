@@ -17,9 +17,9 @@ This tool enables engineers and analysts to extract and summarize supported **ba
 
 #### 1. **Run the analyzer**
 
-```bash
-python main_UE_Capa_Analyzer.py
-```
+  ```bash
+  python main_UE_Capa_Analyzer.py
+  ```
 
 #### 2. **Using the Paste tab**
 
